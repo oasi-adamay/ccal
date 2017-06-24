@@ -7,10 +7,10 @@
     int          int_value;
     double       double_value;
 }
-%token <double_value>      DOUBLE_LITERAL
+%token <int_value>      INT_LITERAL
 %token ADD SUB MUL DIV CR
 %token CMPEQ CMPNE CMPLE CMPLT CMPGE CMPLE 
-%type <double_value> expression equality_expression relational_expression additive_expression multiplicative_expression primary_expression
+%type <int_value> expression equality_expression relational_expression additive_expression multiplicative_expression primary_expression
 %%
 line_list
     : line
@@ -19,7 +19,8 @@ line_list
 line
     : expression CR
     {
-        printf(">>%lf\n", $1);
+       /* printf(">>%lf\n", $1);*/
+       printf(">>%d\n", $1);
     }
 expression
 	: equality_expression
@@ -76,7 +77,7 @@ multiplicative_expression
     }
     ;
 primary_expression
-    : DOUBLE_LITERAL
+    : INT_LITERAL
     ;                 
 %%
 int

@@ -25,13 +25,17 @@ yywrap(void)
 [0-9][0-9]* {
     double temp;
     sscanf(yytext, "%lf", &temp);
-    yylval.double_value = temp;
-    return DOUBLE_LITERAL;
+    yylval.int_value = (int)temp;
+    return INT_LITERAL;
 }
 [0-9]*\.[0-9]* {
     double temp;
     sscanf(yytext, "%lf", &temp);
+/*
     yylval.double_value = temp;
     return DOUBLE_LITERAL;
+*/
+    yylval.int_value = (int)temp;
+    return INT_LITERAL;
 }
 %%
