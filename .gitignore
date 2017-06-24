@@ -1,0 +1,12 @@
+*.o
+*.ilk
+*.pdb
+lex.yy.c
+y.tab.c
+y.tab.h
+y.output
+ccal.exe
+
+
+
+
