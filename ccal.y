@@ -29,7 +29,7 @@ line
     : expression CR
     {
        /* printf(">>%lf\n", $1);*/
-       printf(">>%d\n", $1);
+       printf(">>0x%08x %d\n", $1, $1);
     }
 expression
 	: conditional_expression
@@ -148,7 +148,7 @@ unary_expression
 	}
     | SUB cast_expression
 	{
-        $$ = $2;
+        $$ = - $2;
 	}
     | INV cast_expression
 	{
