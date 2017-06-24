@@ -8,13 +8,16 @@
     double       double_value;
 }
 %token <int_value>      INT_LITERAL
-%token ADD SUB MUL DIV CR
-%token CMPEQ CMPNE CMPLE CMPLT CMPGE CMPLE 
+%token CR
 %token HATENA COLON
-%token ANDAND OROR OR XOR AND
+%token ADD SUB MUL DIV
+%token CMPEQ CMPNE CMPLE CMPLT CMPGE CMPLE 
+%token ANDAND OROR OR XOR AND SFTR SFTL NOT INV
+
 %type <int_value> expression equality_expression relational_expression
 %type <int_value> additive_expression multiplicative_expression primary_expression
-%type <int_value> conditional_expression logical_or_expression logical_and_expression inclusive_or_expression exclusive_or_expression and_expression
+%type <int_value> conditional_expression logical_or_expression logical_and_expression inclusive_or_expression exclusive_or_expression and_expression shift_expression
+%type <int_value> cast_expression unary_expression postfix_expression
 
 %%
 line_list
@@ -83,22 +86,33 @@ equality_expression
     }
 	;
 relational_expression
-	: additive_expression
-	| relational_expression CMPLT additive_expression
+	: shift_expression
+	| relational_expression CMPLT shift_expression
     {
         $$ = $1 < $3;
     }
-	| relational_expression CMPGT additive_expression
+	| relational_expression CMPGT shift_expression
     {
         $$ = $1 > $3;
     }
-	| relational_expression CMPLE additive_expression
+	| relational_expression CMPLE shift_expression
     {
         $$ = $1 <= $3;
     }
-	| relational_expression CMPGE additive_expression
+	| relational_expression CMPGE shift_expression
     {
         $$ = $1 >= $3;
+    }
+	;
+shift_expression
+	: additive_expression
+	| shift_expression SFTL additive_expression
+    {
+        $$ = $1 << $3;
+    }
+    | shift_expression SFTR additive_expression
+    {
+        $$ = $1 >> $3;
     }
 	;
 additive_expression
@@ -113,16 +127,39 @@ additive_expression
     }
     ;
 multiplicative_expression
-    : primary_expression
-    | multiplicative_expression MUL primary_expression 
+    : cast_expression
+    | multiplicative_expression MUL cast_expression 
     {
         $$ = $1 * $3;
     }
-    | multiplicative_expression DIV primary_expression
+    | multiplicative_expression DIV cast_expression
     {
         $$ = $1 / $3;
     }
     ;
+cast_expression
+	: unary_expression	
+unary_expression
+	: postfix_expression
+    | ADD cast_expression
+	{
+        $$ = $2;
+	}
+    | SUB cast_expression
+	{
+        $$ = $2;
+	}
+    | INV cast_expression
+	{
+        $$ = ~$2;
+	}
+    | NOT cast_expression
+	{
+        $$ = !$2;
+	}
+	;
+postfix_expression
+	: primary_expression
 primary_expression
     : INT_LITERAL
     ;                 
