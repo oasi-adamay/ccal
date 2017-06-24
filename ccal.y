@@ -13,6 +13,7 @@
 %token ADD SUB MUL DIV
 %token CMPEQ CMPNE CMPLE CMPLT CMPGE CMPLE 
 %token ANDAND OROR OR XOR AND SFTR SFTL NOT INV
+%token PARL PARR
 
 %type <int_value> expression equality_expression relational_expression
 %type <int_value> additive_expression multiplicative_expression primary_expression
@@ -162,6 +163,10 @@ postfix_expression
 	: primary_expression
 primary_expression
     : INT_LITERAL
+	| PARL expression PARR
+	{
+        $$ = $2;
+	}
     ;                 
 %%
 int

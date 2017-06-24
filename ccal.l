@@ -33,6 +33,9 @@ yywrap(void)
 ">>"	return SFTR;
 "!"		return NOT;
 "~"		return INV;
+"("		return PARL;
+")"		return PARR;
+
 [0-9][0-9]* {
     double temp;
     sscanf(yytext, "%lf", &temp);
