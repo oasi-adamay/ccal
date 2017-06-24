@@ -22,6 +22,13 @@ yywrap(void)
 "<="	return CMPLE;
 ">="	return CMPGE;
 "\n"		return CR;
+"?"		return HATENA;
+":"		return COLON;
+"||"	return OROR;
+"&&"	return ANDAND;
+"&"		return AND;
+"|"		return OR;
+"^"		return XOR;
 [0-9][0-9]* {
     double temp;
     sscanf(yytext, "%lf", &temp);
