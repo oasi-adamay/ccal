@@ -15,6 +15,12 @@ yywrap(void)
 "-"		return SUB;
 "*"		return MUL;
 "/"		return DIV;
+"=="	return CMPEQ;
+"!="	return CMPNE;
+"<"		return CMPLT;
+">"		return CMPGT;
+"<="	return CMPLE;
+">="	return CMPGE;
 "\n"		return CR;
 [0-9][0-9]* {
     double temp;

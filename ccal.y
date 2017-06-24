@@ -9,7 +9,8 @@
 }
 %token <double_value>      DOUBLE_LITERAL
 %token ADD SUB MUL DIV CR
-%type <double_value> expression term primary_expression
+%token CMPEQ CMPNE CMPLE CMPLT CMPGE CMPLE 
+%type <double_value> expression equality_expression relational_expression additive_expression multiplicative_expression primary_expression
 %%
 line_list
     : line
@@ -21,23 +22,55 @@ line
         printf(">>%lf\n", $1);
     }
 expression
-    : term
-    | expression ADD term
+	: equality_expression
+equality_expression
+	: relational_expression
+	| equality_expression CMPEQ relational_expression 
+    {
+        $$ = $1 == $3;
+    }
+	| equality_expression CMPNE relational_expression 
+    {
+        $$ = $1 != $3;
+    }
+	;
+relational_expression
+	: additive_expression
+	| relational_expression CMPLT additive_expression
+    {
+        $$ = $1 < $3;
+    }
+	| relational_expression CMPGT additive_expression
+    {
+        $$ = $1 > $3;
+    }
+	| relational_expression CMPLE additive_expression
+    {
+        $$ = $1 <= $3;
+    }
+	| relational_expression CMPGE additive_expression
+    {
+        $$ = $1 >= $3;
+    }
+	;
+additive_expression
+    : multiplicative_expression
+    | additive_expression ADD multiplicative_expression
     {
         $$ = $1 + $3;
     }
-    | expression SUB term
+    | additive_expression SUB multiplicative_expression
     {
         $$ = $1 - $3;
     }
     ;
-term
+multiplicative_expression
     : primary_expression
-    | term MUL primary_expression 
+    | multiplicative_expression MUL primary_expression 
     {
         $$ = $1 * $3;
     }
-    | term DIV primary_expression
+    | multiplicative_expression DIV primary_expression
     {
         $$ = $1 / $3;
     }
