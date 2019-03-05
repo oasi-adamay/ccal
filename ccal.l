@@ -1,8 +1,8 @@
 %{
 #include <stdio.h>
 #include "y.tab.h"
-#define fileno _fileno
-#define isatty _isatty
+//#define fileno _fileno
+//#define isatty _isatty
  
 int
 yywrap(void)

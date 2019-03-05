@@ -68,7 +68,7 @@ lex.yy.c: ccal.l
 	$(LEX) $<
 
 $(TARGET) : lex.yy.c y.tab.c
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS)  $^ -o $@
 
 
 
